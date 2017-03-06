@@ -15,62 +15,62 @@ class Window(QtGui.QMainWindow):
         super(Window, self).__init__()
         self.setGeometry(300, 200, 500, 300)
         self.setWindowTitle("kushal")
-        self.setWindowIcon(QtGui.QIcon(r'C:\Users\Admin\Pictures\Wallpapers\Dim Graveyard.png'))
-
-        openEditor = QtGui.QAction("Editor", self)
-        openEditor.setShortcut("Ctrl+E")
-        openEditor.triggered.connect(self.editor)
-        
-        extractAction1 = QtGui.QAction("New File", self)
-        extractAction1.setShortcut("Ctrl+N")
-        extractAction1.setStatusTip("New")
-        extractAction1.triggered.connect(self.close_application)
-
-        extractAction2 = QtGui.QAction("Exit", self)
-        extractAction2.setShortcut("Ctrl+Q")
-        extractAction2.setStatusTip("Leave the App")
-        extractAction2.triggered.connect(self.close_application)
-
-        extractAction3 = QtGui.QAction("Undo", self)
-        extractAction3.setShortcut("Ctrl+Z")
-        extractAction3.setStatusTip("Undo")
-        extractAction3.triggered.connect(self.close_application)
-
-        extractAction4 = QtGui.QAction("Undo", self)
-        extractAction4.setShortcut("Ctrl+Z")
-        extractAction4.setStatusTip("Undo")
-        extractAction4.triggered.connect(self.close_application)
-        
-        extractAction5 = QtGui.QAction("comment out", self)
-        extractAction5.setShortcut("Alt+3")
-        extractAction5.setStatusTip("Comment out")
-        extractAction5.triggered.connect(self.close_application)
-
-        extractAction6 = QtGui.QAction("Uncomment", self)
-        extractAction6.setShortcut("Alt+4")
-        extractAction6.setStatusTip("Uncomment")
-        extractAction6.triggered.connect(self.close_application)
-
-      
-        
-        self.statusBar()
-
-        mainMenu = self.menuBar()
-        fileMenu1 = mainMenu.addMenu('File')
-        fileMenu1.addAction(extractAction1)
-        fileMenu1.addAction(extractAction2)
-
-        fileMenu2 = mainMenu.addMenu("Edit")
-        fileMenu2.addAction(extractAction3)
-        fileMenu2.addAction(extractAction4)
-
-        
-        fileMenu2 = mainMenu.addMenu("Format")
-        fileMenu2.addAction(extractAction5)
-        fileMenu2.addAction(extractAction6)
-
-        fileMenu2 = mainMenu.addMenu("Editor")
-        fileMenu2.addAction(openEditor)
+##        self.setWindowIcon(QtGui.QIcon(r'C:\Users\Admin\Pictures\Wallpapers\Dim Graveyard.png'))
+##
+##        openEditor = QtGui.QAction("Editor", self)
+##        openEditor.setShortcut("Ctrl+E")
+##        openEditor.triggered.connect(self.editor)
+##        
+##        extractAction1 = QtGui.QAction("New File", self)
+##        extractAction1.setShortcut("Ctrl+N")
+##        extractAction1.setStatusTip("New")
+##        extractAction1.triggered.connect(self.close_application)
+##
+##        extractAction2 = QtGui.QAction("Exit", self)
+##        extractAction2.setShortcut("Ctrl+Q")
+##        extractAction2.setStatusTip("Leave the App")
+##        extractAction2.triggered.connect(self.close_application)
+##
+##        extractAction3 = QtGui.QAction("Undo", self)
+##        extractAction3.setShortcut("Ctrl+Z")
+##        extractAction3.setStatusTip("Undo")
+##        extractAction3.triggered.connect(self.close_application)
+##
+##        extractAction4 = QtGui.QAction("Undo", self)
+##        extractAction4.setShortcut("Ctrl+Z")
+##        extractAction4.setStatusTip("Undo")
+##        extractAction4.triggered.connect(self.close_application)
+##        
+##        extractAction5 = QtGui.QAction("comment out", self)
+##        extractAction5.setShortcut("Alt+3")
+##        extractAction5.setStatusTip("Comment out")
+##        extractAction5.triggered.connect(self.close_application)
+##
+##        extractAction6 = QtGui.QAction("Uncomment", self)
+##        extractAction6.setShortcut("Alt+4")
+##        extractAction6.setStatusTip("Uncomment")
+##        extractAction6.triggered.connect(self.close_application)
+##
+##      
+##        
+##        self.statusBar()
+##
+##        mainMenu = self.menuBar()
+##        fileMenu1 = mainMenu.addMenu('File')
+##        fileMenu1.addAction(extractAction1)
+##        fileMenu1.addAction(extractAction2)
+##
+##        fileMenu2 = mainMenu.addMenu("Edit")
+##        fileMenu2.addAction(extractAction3)
+##        fileMenu2.addAction(extractAction4)
+##
+##        
+##        fileMenu2 = mainMenu.addMenu("Format")
+##        fileMenu2.addAction(extractAction5)
+##        fileMenu2.addAction(extractAction6)
+##
+##        fileMenu2 = mainMenu.addMenu("Editor")
+##        fileMenu2.addAction(openEditor)
         self.home()
 
     def home(self):
@@ -80,28 +80,28 @@ class Window(QtGui.QMainWindow):
         btn.resize(btn.sizeHint())
         btn.move(0, 100)
 
-        extractAction = QtGui.QAction(QtGui.QIcon(r'C:\Users\Admin\Pictures\Wallpapers\Dim Graveyard.png'), 'Graveyard', self)
-        extractAction.setStatusTip("Uncomment")
-        extractAction.setShortcut("Alt+7")
-        extractAction.triggered.connect(self.close_application)
-        
-        toolBar = self.addToolBar("Extraction")
-        toolBar.addAction(extractAction)
-
-        checkBox = QtGui.QCheckBox("Enlarge Window", self)
-        checkBox.move(100, 100)
-        checkBox.toggle()
-        checkBox.stateChanged.connect(self.enlarge_window)
-
-        self.progress = QtGui.QProgressBar(self)
-        self.progress.setGeometry(200, 80, 250, 20)
-        btn = QtGui.QPushButton("Download", self)
-        btn.move(200, 120)
-        btn.clicked.connect(self.download)
-
-        print(self.style().objectName())
-        #styleChoice = QtGui.QLabel("Windows Vista", self)
-        #comboox = 9826342557
+##        extractAction = QtGui.QAction(QtGui.QIcon(r'C:\Users\Admin\Pictures\Wallpapers\Dim Graveyard.png'), 'Graveyard', self)
+##        extractAction.setStatusTip("Uncomment")
+##        extractAction.setShortcut("Alt+7")
+##        extractAction.triggered.connect(self.close_application)
+##        
+##        toolBar = self.addToolBar("Extraction")
+##        toolBar.addAction(extractAction)
+##
+##        checkBox = QtGui.QCheckBox("Enlarge Window", self)
+##        checkBox.move(100, 100)
+##        checkBox.toggle()
+##        checkBox.stateChanged.connect(self.enlarge_window)
+##
+##        self.progress = QtGui.QProgressBar(self)
+##        self.progress.setGeometry(200, 80, 250, 20)
+##        btn = QtGui.QPushButton("Download", self)
+##        btn.move(200, 120)
+##        btn.clicked.connect(self.download)
+##
+##        print(self.style().objectName())
+##        #styleChoice = QtGui.QLabel("Windows Vista", self)
+##        #comboox = 9826342557
         self.show()
 
     def enlarge_window(self, state):
@@ -130,7 +130,6 @@ def run():
     app = QtGui.QApplication(sys.argv)
 
     GUI = Window()
-    GUI.setWindowTitle("gdr")
     sys.exit(app.exec_())
 
 run()
