@@ -1,10 +1,11 @@
 from pygame import mixer
 mixer.init()
-mixer.music.load("b.wav")
+mixer.music.load("a.mp3")
 mixer.music.play()
 input()
 for i in range(10):
     mixer.music.pause()
+    print(mixer.music.get_pos())
     input()
     mixer.music.unpause()
     input()
