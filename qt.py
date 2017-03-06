@@ -13,10 +13,14 @@ class Window(QtGui.QMainWindow):
 
     def __init__(self):
         super(Window, self).__init__()
-        self.setGeometry(100, 100, 500, 300)
+        self.setGeometry(300, 200, 500, 300)
         self.setWindowTitle("kushal")
         self.setWindowIcon(QtGui.QIcon(r'C:\Users\Admin\Pictures\Wallpapers\Dim Graveyard.png'))
 
+        openEditor = QtGui.QAction("Editor", self)
+        openEditor.setShortcut("Ctrl+E")
+        openEditor.triggered.connect(self.editor)
+        
         extractAction1 = QtGui.QAction("New File", self)
         extractAction1.setShortcut("Ctrl+N")
         extractAction1.setStatusTip("New")
@@ -64,6 +68,9 @@ class Window(QtGui.QMainWindow):
         fileMenu2 = mainMenu.addMenu("Format")
         fileMenu2.addAction(extractAction5)
         fileMenu2.addAction(extractAction6)
+
+        fileMenu2 = mainMenu.addMenu("Editor")
+        fileMenu2.addAction(openEditor)
         self.home()
 
     def home(self):
@@ -108,6 +115,10 @@ class Window(QtGui.QMainWindow):
         while completed < 100:
             completed += 0.0001
             self.progress.setValue(completed)
+
+    def editor(self):
+        textEdit = QtGui.QTextEdit()
+        self.setCentralWidget(textEdit)
     def close_application(self):
         choice = QtGui.QMessageBox.question(self, "quit", "you sure?",
                                             QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
