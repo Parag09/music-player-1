@@ -1,6 +1,6 @@
 import sys
 from PyQt4 import QtGui, QtCore
-
+import threading
 ##app = QtGui.QApplication(sys.argv)
 ##
 ##window = QtGui.QWidget()
@@ -75,7 +75,7 @@ class Window(QtGui.QMainWindow):
 
     def home(self):
         btn = QtGui.QPushButton("Quit", self)
-        btn.clicked.connect(self.close_application)
+        btn.clicked.connect(self.execute)
         
         btn.resize(btn.sizeHint())
         btn.move(0, 100)
@@ -124,7 +124,8 @@ class Window(QtGui.QMainWindow):
                                             QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
             sys.exit()
-            
+    def execute(self):
+        print(threading.active_count())
 
 def run():
     app = QtGui.QApplication(sys.argv)

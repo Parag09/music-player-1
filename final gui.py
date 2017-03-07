@@ -6,11 +6,14 @@ from pydub import AudioSegment
 import pyaudio
 import wave
 global path
+global path2
 global t
+global t2
 isPlaying = False
 started = False
 recording = False
 recordSlots = []  #[(s,e), (es), (), ()]
+called = False
 
 class Window(QtGui.QMainWindow):
     """docstring for ."""
@@ -47,37 +50,50 @@ class Window(QtGui.QMainWindow):
 
     def thirdWindow(self):
         self.playButton.hide()
-        self.recordButton.hide()
-        self.browseButton = QtGui.QPushButton("Browse",self)
-        self.browseButton.clicked.connect(self.getSavePath)
-        self.browseButton.resize(self.browseButton.sizeHint())
-        self.browseButton.move(0, 100)
-        self.browseButton.show()
+        self.browseButton2 = QtGui.QPushButton("Browse2",self)
+        self.browseButton2.clicked.connect(self.getSavePath)
+        self.browseButton2.resize(self.browseButton2.sizeHint())
+        self.browseButton2.move(0, 100)
+        self.browseButton2.show()
+        self.nextButton2 = QtGui.QPushButton("Next",self)
+        self.nextButton2.clicked.connect(self.save)
+        self.nextButton2.resize(self.nextButton.sizeHint())
+        self.nextButton2.move(100, 100)
 
     def getOpenPath(self):
         global path
+
         path = QtGui.QFileDialog.getOpenFileName()
 
+            
     def getSavePath(self):
-        global path
-        path = QtGui.QFileDialog.getSaveFileName()
+        global path2
+        
+        path2 = QtGui.QFileDialog.getSaveFileName()
+
+
+    def save(self):
         song = AudioSegment.from_mp3(path)
+        print("almost done")
         for i in range(len(recordSlots)):
             record = AudioSegment.from_wav(str(i+1)+".wav")
             song = song[:recordSlots[i]] + record + song[recordSlots[i]:]
-        song.export(path, format = "mp3")
+        song.export(path2, format = "mp3")
+        print("done")
+        
     def playPause(self):
         global started
         global isPlaying
         global recordSlots
+        global t2
         if not started :
             mixer.init()
             mixer.music.load(path)
             mixer.music.play()
             started = True
             isPlaying= True
-            t2 = Thread(target = self.isFinished)
-            t2.start()
+##            t2 = Thread(target = self.isFinished)
+##            t2.start()
         elif isPlaying:
              mixer.music.pause()
              recordSlots += [mixer.music.get_pos()]
@@ -89,6 +105,7 @@ class Window(QtGui.QMainWindow):
             isPlaying= True
     def recordVar(self):
         global recording
+        global t
         if not recording:
             recording = True
             t = Thread(target = self.record)
@@ -122,10 +139,14 @@ class Window(QtGui.QMainWindow):
         wf.close()
 
     def isFinished(self):
-        l = len(AudioSegment.from_mp3(path))
-        while mixer.music.get_pos() != l:
+        global t2
+##        l = len(AudioSegment.from_mp3(path))
+        while mixer.music.get_pos() != -1:
             pass
+        called = True
+        t2.join()
         self.thirdWindow()
+
 app=QtGui.QApplication(sys.argv)
 w=Window()
 sys.exit(app.exec_())
