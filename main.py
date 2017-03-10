@@ -34,20 +34,26 @@ class Window(QtGui.QMainWindow):
         self.setPalette(palette)
 
     def firstWindow(self):
-        text = QtGui.QLabel(self)
-        text.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+##        text = QtGui.QLabel(self)
+##        text.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+##
+##        text.setText("OVERLAY TEXT")
 
-        text.setText("OVERLAY TEXT")
-
-        pic = QtGui.QLabel(self)
-        pic.setGeometry(175, 175, 150, 150)
+        self.browseIcon = QtGui.QLabel(self)
+        self.browseIcon.setGeometry(175, 175, 150, 150)
         #use full ABSOLUTE path to the image, not relative
-        pic.setPixmap(QtGui.QPixmap(os.getcwd() + "\\paritosh.png"))
-        pic.mousePressEvent = self.getOpenPath
+        self.browseIcon.setPixmap(QtGui.QPixmap(os.getcwd() + "\\paritosh.png"))
+        self.browseIcon.mousePressEvent = self.getOpenPath
+
+        self.browseBubble = QtGui.QLabel(self)
+        self.browseBubble.setGeometry(10, 0, 200, 200)
+        #use full ABSOLUTE path to the image, not relative
+        self.browseBubble.setPixmap(QtGui.QPixmap(os.getcwd() + "\\bubble3.png"))
+        
 
         self.textBox = QtGui.QLineEdit(self)
-        self.textBox.move(20, 100)
-        self.textBox.resize(280,20)
+        self.textBox.move(100, 325)
+        self.textBox.resize(300,20)
 ##        self.browseButton = QtGui.QPushButton("Browse",self)
 ##        self.browseButton.clicked.connect(self.getOpenPath)
 ##        self.browseButton.resize(self.browseButton.sizeHint())
@@ -56,17 +62,54 @@ class Window(QtGui.QMainWindow):
         self.nextButton = QtGui.QPushButton("Next",self)
         self.nextButton.clicked.connect(self.secondWindow)
         self.nextButton.resize(self.nextButton.sizeHint())
-        self.nextButton.move(100,400)
+        self.nextButton.move(400,400)
         self.show()
 
     def secondWindow(self):
-        self.browseButton.hide()
+       ## self.browseButton.hide()
         self.nextButton.hide()
         self.textBox.hide()
+        self.browseBubble.hide()
+
+        self.playBubble = QtGui.QLabel(self)
+        self.playBubble.setGeometry(10, 0, 200, 200)
+        #use full ABSOLUTE path to the image, not relative
+        self.playBubble.setPixmap(QtGui.QPixmap(os.getcwd() + "\\bubble4.png"))
+        self.playBubble.show()
+
+
+        self.playIcon = QtGui.QLabel(self)
+        self.playIcon.setGeometry(150, 175, 200, 139)
+        #use full ABSOLUTE path to the image, not relative
+        self.playIcon.setPixmap(QtGui.QPixmap(os.getcwd() + "\\play.png"))
+        self.playIcon.mousePressEvent = self.playPause
+        self.playIcon.show()
+
+        self.pauseIcon = QtGui.QLabel(self)
+        self.pauseIcon.setGeometry(150, 175, 200, 139)
+        #use full ABSOLUTE path to the image, not relative
+        self.pauseIcon.setPixmap(QtGui.QPixmap(os.getcwd() + "\\pause.png"))
+        self.pauseIcon.mousePressEvent = self.playPause
+
+        self.recordIcon = QtGui.QLabel(self)
+        self.recordIcon.setGeometry(150, 175, 200, 139)
+        #use full ABSOLUTE path to the image, not relative
+        self.recordIcon.setPixmap(QtGui.QPixmap(os.getcwd() + "\\record.png"))
+        self.recordIcon.mousePressEvent = self.recordVar
+        
+        self.recordstopIcon = QtGui.QLabel(self)
+        self.recordstopIcon.setGeometry(150, 175, 200, 139)
+        #use full ABSOLUTE path to the image, not relative
+        self.recordstopIcon.setPixmap(QtGui.QPixmap(os.getcwd() + "\\stoprecord.png"))
+        self.recordstopIcon.mousePressEvent = self.recordVar
+        
+        
+
+        self.browseIcon.hide()
         self.playButton = QtGui.QPushButton("Play",self)
         self.playButton.clicked.connect(self.playPause)
         self.playButton.resize(self.playButton.sizeHint())
-        self.playButton.move(0, 100)
+        self.playButton.move(400, 400)
         self.playButton.show()
         self.recordButton = QtGui.QPushButton("Start Recording", self)
         self.recordButton.clicked.connect(self.recordVar)
@@ -84,12 +127,12 @@ class Window(QtGui.QMainWindow):
         self.nextButton3 = QtGui.QPushButton("complete",self)
         self.nextButton3.clicked.connect(self.complete)
         self.nextButton3.resize(self.nextButton.sizeHint())
-        self.nextButton3.move(100, 100)
+        self.nextButton3.move(420, 450)
 
         self.nextButton3.show()
 
     def thirdWindow(self):
-        self.playButton.hide()
+        self.playIcon.hide()
         
         self.browseButton2.show()
         self.nextButton2.show()
@@ -117,7 +160,7 @@ class Window(QtGui.QMainWindow):
         print("done")
         sys.exit()
         
-    def playPause(self):
+    def playPause(self, event):
         global started
         global isPlaying
         global recordSlots
@@ -130,32 +173,37 @@ class Window(QtGui.QMainWindow):
             isPlaying= True
             t2 = Thread(target = self.isFinished)
             t2.start()
-            self.playButton.setText("Pause")
+##            self.playButton.setText("Pause")
+            self.playIcon.hide()
+            self.pauseIcon.show()
         elif isPlaying:
              mixer.music.pause()
              recordSlots += [mixer.music.get_pos()]
              self.playButton.hide()
              self.recordButton.show()
              isPlaying = False
-             self.playButton.setText("Play")
+##             self.playButton.setText("Play")
+             self.pauseIcon.hide()
+             self.recordIcon.show()
         else:
             mixer.music.unpause()
             isPlaying= True
-            self.playButton.setText("Pause")
-    def recordVar(self):
+##            self.playButton.setText("Pause")
+            self.recordstopIcon.hide()
+            self.pauseIcon.show()
+    def recordVar(self, event):
         global recording
         global t
         if not recording:
             recording = True
             t = Thread(target = self.record)
             t.start()
-            self.recordButton.setText("Stop Recording")
+            self.recordIcon.hide()
+            self.recordstopIcon.show()
         else:
-            self.recordButton.setText("Start Recording")
-            self.playButton.setText("Play")
+            self.recordstopIcon.hide()
+            self.playIcon.show()
             recording = False
-            self.recordButton.hide()
-            self.playButton.show()
 
     def record(self):
         global recording
