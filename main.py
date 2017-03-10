@@ -78,6 +78,24 @@ class Window(QtGui.QMainWindow):
         self.playBubble.show()
 
 
+        self.pauseBubble = QtGui.QLabel(self)
+        self.pauseBubble.setGeometry(10, 0, 200, 200)
+        #use full ABSOLUTE path to the image, not relative
+        self.pauseBubble.setPixmap(QtGui.QPixmap(os.getcwd() + "\\pausebubble.png"))
+
+        
+        self.startrecordBubble = QtGui.QLabel(self)
+        self.startrecordBubble.setGeometry(10, 0, 200, 200)
+        #use full ABSOLUTE path to the image, not relative
+        self.startrecordBubble.setPixmap(QtGui.QPixmap(os.getcwd() + "\\startrecordbubble.png"))
+
+        
+        self.stoprecordBubble = QtGui.QLabel(self)
+        self.stoprecordBubble.setGeometry(10, 0, 200, 200)
+        #use full ABSOLUTE path to the image, not relative
+        self.stoprecordBubble.setPixmap(QtGui.QPixmap(os.getcwd() + "\\stoprecordbubble.png")  )                         
+
+
         self.playIcon = QtGui.QLabel(self)
         self.playIcon.setGeometry(150, 175, 200, 139)
         #use full ABSOLUTE path to the image, not relative
@@ -106,23 +124,23 @@ class Window(QtGui.QMainWindow):
         
 
         self.browseIcon.hide()
-        self.playButton = QtGui.QPushButton("Play",self)
-        self.playButton.clicked.connect(self.playPause)
-        self.playButton.resize(self.playButton.sizeHint())
-        self.playButton.move(400, 400)
-        self.playButton.show()
-        self.recordButton = QtGui.QPushButton("Start Recording", self)
-        self.recordButton.clicked.connect(self.recordVar)
-        self.recordButton.resize(self.recordButton.sizeHint())
-        self.recordButton.move(0, 100)
+##        self.playButton = QtGui.QPushButton("Play",self)
+##        self.playButton.clicked.connect(self.playPause)
+##        self.playButton.resize(self.playButton.sizeHint())
+##        self.playButton.move(400, 400)
+##        self.playButton.show()
+##        self.recordButton = QtGui.QPushButton("Start Recording", self)
+##        self.recordButton.clicked.connect(self.recordVar)
+##        self.recordButton.resize(self.recordButton.sizeHint())
+##        self.recordButton.move(0, 100)
         self.browseButton2 = QtGui.QPushButton("Browse",self)
         self.browseButton2.clicked.connect(self.getSavePath)
         self.browseButton2.resize(self.browseButton2.sizeHint())
-        self.browseButton2.move(0, 100)
+        self.browseButton2.move(150,400)
         self.nextButton2 = QtGui.QPushButton("Finish",self)
         self.nextButton2.clicked.connect(self.save)
         self.nextButton2.resize(self.nextButton.sizeHint())
-        self.nextButton2.move(100, 100)
+        self.nextButton2.move(300, 400)
 
         self.nextButton3 = QtGui.QPushButton("complete",self)
         self.nextButton3.clicked.connect(self.complete)
@@ -176,21 +194,32 @@ class Window(QtGui.QMainWindow):
 ##            self.playButton.setText("Pause")
             self.playIcon.hide()
             self.pauseIcon.show()
+            self.playBubble.hide()
+            self.pauseBubble.show()                       
         elif isPlaying:
              mixer.music.pause()
              recordSlots += [mixer.music.get_pos()]
-             self.playButton.hide()
-             self.recordButton.show()
+##             self.playButton.hide()
+##             self.recordButton.show()
              isPlaying = False
 ##             self.playButton.setText("Play")
              self.pauseIcon.hide()
              self.recordIcon.show()
+             self.pauseBubble.hide()
+             self.playBubble.hide()
+
+             self.startrecordBubble.show()
+                                        
         else:
             mixer.music.unpause()
             isPlaying= True
 ##            self.playButton.setText("Pause")
-            self.recordstopIcon.hide()
+            self.playIcon.hide()
+                                        
             self.pauseIcon.show()
+            self.playBubble.hide()
+            self.pauseBubble.show()                            
+                                        
     def recordVar(self, event):
         global recording
         global t
@@ -200,9 +229,13 @@ class Window(QtGui.QMainWindow):
             t.start()
             self.recordIcon.hide()
             self.recordstopIcon.show()
+            self.startrecordBubble.hide()
+            self.stoprecordBubble.show()
         else:
             self.recordstopIcon.hide()
             self.playIcon.show()
+            self.stoprecordBubble.hide()
+            self.playBubble.show()
             recording = False
 
     def record(self):
