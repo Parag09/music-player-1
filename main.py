@@ -1,20 +1,26 @@
 import sys
 from PyQt4 import QtGui ,QtCore
+
 import os
+
 from pygame import mixer
 from threading import Thread
 from pydub import AudioSegment
 import pyaudio
 import wave
 global path
+
 global path2
 global t
 global t2
+
 isPlaying = False
 started = False
 recording = False
 recordSlots = []  #[(s,e), (es), (), ()]
+
 called = False
+
 
 class Window(QtGui.QMainWindow):
     """docstring for ."""
@@ -23,6 +29,7 @@ class Window(QtGui.QMainWindow):
         self.setGeometry(200,200,500,500)
         self.setWindowTitle("PlayCord")
         self.firstWindow()
+
         self.setFixedSize(self.size())
 
         palette	= QtGui.QPalette()
@@ -59,9 +66,11 @@ class Window(QtGui.QMainWindow):
 ##        self.browseButton.resize(self.browseButton.sizeHint())
 ##        self.browseButton.move(400, 100)
 
+
         self.nextButton = QtGui.QPushButton("Next",self)
         self.nextButton.clicked.connect(self.secondWindow)
         self.nextButton.resize(self.nextButton.sizeHint())
+
         self.nextButton.move(400,400)
         self.show()
 
@@ -183,6 +192,7 @@ class Window(QtGui.QMainWindow):
         global isPlaying
         global recordSlots
         global t2
+
         if not started :
             mixer.init()
             mixer.music.load(path)
@@ -191,6 +201,7 @@ class Window(QtGui.QMainWindow):
             isPlaying= True
             t2 = Thread(target = self.isFinished)
             t2.start()
+
 ##            self.playButton.setText("Pause")
             self.playIcon.hide()
             self.pauseIcon.show()
@@ -227,6 +238,7 @@ class Window(QtGui.QMainWindow):
             recording = True
             t = Thread(target = self.record)
             t.start()
+
             self.recordIcon.hide()
             self.recordstopIcon.show()
             self.startrecordBubble.hide()
@@ -261,6 +273,7 @@ class Window(QtGui.QMainWindow):
         wf.close()
 
     def isFinished(self):
+
         global t2
         while mixer.music.get_pos() != -1:
             pass
@@ -270,6 +283,7 @@ class Window(QtGui.QMainWindow):
     def complete(self):
         mixer.music.pause()
         self.thirdWindow()
+
 
 app=QtGui.QApplication(sys.argv)
 w=Window()
