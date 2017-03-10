@@ -1,5 +1,6 @@
 import sys
 from PyQt4 import QtGui ,QtCore
+import os
 from pygame import mixer
 from threading import Thread
 from pydub import AudioSegment
@@ -22,28 +23,52 @@ class Window(QtGui.QMainWindow):
         self.setGeometry(200,200,500,500)
         self.setWindowTitle("PlayCord")
         self.firstWindow()
+        self.setFixedSize(self.size())
+
+        palette	= QtGui.QPalette()
+        
+
+        palette.setBrush(QtGui.QPalette.Background,QtGui.QBrush(QtGui.QPixmap("The Flatline.png")))
+
+    
+        self.setPalette(palette)
 
     def firstWindow(self):
-        self.browseButton = QtGui.QPushButton("Browse",self)
-        self.browseButton.clicked.connect(self.getOpenPath)
-        self.browseButton.resize(self.browseButton.sizeHint())
-        self.browseButton.move(0, 100)
+        text = QtGui.QLabel(self)
+        text.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+
+        text.setText("OVERLAY TEXT")
+
+        pic = QtGui.QLabel(self)
+        pic.setGeometry(175, 175, 150, 150)
+        #use full ABSOLUTE path to the image, not relative
+        pic.setPixmap(QtGui.QPixmap(os.getcwd() + "\\paritosh.png"))
+        pic.mousePressEvent = self.getOpenPath
+
+        self.textBox = QtGui.QLineEdit(self)
+        self.textBox.move(20, 100)
+        self.textBox.resize(280,20)
+##        self.browseButton = QtGui.QPushButton("Browse",self)
+##        self.browseButton.clicked.connect(self.getOpenPath)
+##        self.browseButton.resize(self.browseButton.sizeHint())
+##        self.browseButton.move(400, 100)
 
         self.nextButton = QtGui.QPushButton("Next",self)
         self.nextButton.clicked.connect(self.secondWindow)
         self.nextButton.resize(self.nextButton.sizeHint())
-        self.nextButton.move(100, 100)
+        self.nextButton.move(100,400)
         self.show()
 
     def secondWindow(self):
         self.browseButton.hide()
         self.nextButton.hide()
+        self.textBox.hide()
         self.playButton = QtGui.QPushButton("Play",self)
         self.playButton.clicked.connect(self.playPause)
         self.playButton.resize(self.playButton.sizeHint())
         self.playButton.move(0, 100)
         self.playButton.show()
-        self.recordButton = QtGui.QPushButton("Record", self)
+        self.recordButton = QtGui.QPushButton("Start Recording", self)
         self.recordButton.clicked.connect(self.recordVar)
         self.recordButton.resize(self.recordButton.sizeHint())
         self.recordButton.move(0, 100)
@@ -56,17 +81,25 @@ class Window(QtGui.QMainWindow):
         self.nextButton2.resize(self.nextButton.sizeHint())
         self.nextButton2.move(100, 100)
 
+        self.nextButton3 = QtGui.QPushButton("complete",self)
+        self.nextButton3.clicked.connect(self.complete)
+        self.nextButton3.resize(self.nextButton.sizeHint())
+        self.nextButton3.move(100, 100)
+
+        self.nextButton3.show()
+
     def thirdWindow(self):
         self.playButton.hide()
         
         self.browseButton2.show()
         self.nextButton2.show()
+        self.nextButton3.hide()
 
-    def getOpenPath(self):
+    def getOpenPath(self, event):
         global path
 
         path = QtGui.QFileDialog.getOpenFileName()
-
+        self.textBox.setText(path)
             
     def getSavePath(self):
         global path2
@@ -82,6 +115,7 @@ class Window(QtGui.QMainWindow):
             song = song[:recordSlots[i]] + record + song[recordSlots[i]:]
         song.export(path2, format = "mp3")
         print("done")
+        sys.exit()
         
     def playPause(self):
         global started
@@ -96,15 +130,18 @@ class Window(QtGui.QMainWindow):
             isPlaying= True
             t2 = Thread(target = self.isFinished)
             t2.start()
+            self.playButton.setText("Pause")
         elif isPlaying:
              mixer.music.pause()
              recordSlots += [mixer.music.get_pos()]
              self.playButton.hide()
              self.recordButton.show()
              isPlaying = False
+             self.playButton.setText("Play")
         else:
             mixer.music.unpause()
             isPlaying= True
+            self.playButton.setText("Pause")
     def recordVar(self):
         global recording
         global t
@@ -112,8 +149,10 @@ class Window(QtGui.QMainWindow):
             recording = True
             t = Thread(target = self.record)
             t.start()
+            self.recordButton.setText("Stop Recording")
         else:
-            
+            self.recordButton.setText("Start Recording")
+            self.playButton.setText("Play")
             recording = False
             self.recordButton.hide()
             self.playButton.show()
@@ -145,6 +184,10 @@ class Window(QtGui.QMainWindow):
         while mixer.music.get_pos() != -1:
             pass
         called = True
+        self.thirdWindow()
+
+    def complete(self):
+        mixer.music.pause()
         self.thirdWindow()
 
 app=QtGui.QApplication(sys.argv)
