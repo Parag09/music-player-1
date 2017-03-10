@@ -47,18 +47,20 @@ class Window(QtGui.QMainWindow):
         self.recordButton.clicked.connect(self.recordVar)
         self.recordButton.resize(self.recordButton.sizeHint())
         self.recordButton.move(0, 100)
-
-    def thirdWindow(self):
-        self.playButton.hide()
-        self.browseButton2 = QtGui.QPushButton("Browse2",self)
+        self.browseButton2 = QtGui.QPushButton("Browse",self)
         self.browseButton2.clicked.connect(self.getSavePath)
         self.browseButton2.resize(self.browseButton2.sizeHint())
         self.browseButton2.move(0, 100)
-        self.browseButton2.show()
-        self.nextButton2 = QtGui.QPushButton("Next",self)
+        self.nextButton2 = QtGui.QPushButton("Finish",self)
         self.nextButton2.clicked.connect(self.save)
         self.nextButton2.resize(self.nextButton.sizeHint())
         self.nextButton2.move(100, 100)
+
+    def thirdWindow(self):
+        self.playButton.hide()
+        
+        self.browseButton2.show()
+        self.nextButton2.show()
 
     def getOpenPath(self):
         global path
@@ -92,8 +94,8 @@ class Window(QtGui.QMainWindow):
             mixer.music.play()
             started = True
             isPlaying= True
-##            t2 = Thread(target = self.isFinished)
-##            t2.start()
+            t2 = Thread(target = self.isFinished)
+            t2.start()
         elif isPlaying:
              mixer.music.pause()
              recordSlots += [mixer.music.get_pos()]
@@ -111,7 +113,7 @@ class Window(QtGui.QMainWindow):
             t = Thread(target = self.record)
             t.start()
         else:
-            #t.join()
+            
             recording = False
             self.recordButton.hide()
             self.playButton.show()
@@ -140,11 +142,9 @@ class Window(QtGui.QMainWindow):
 
     def isFinished(self):
         global t2
-##        l = len(AudioSegment.from_mp3(path))
         while mixer.music.get_pos() != -1:
             pass
         called = True
-        t2.join()
         self.thirdWindow()
 
 app=QtGui.QApplication(sys.argv)
